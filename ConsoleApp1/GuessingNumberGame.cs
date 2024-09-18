@@ -1,5 +1,5 @@
-﻿using ConsoleApp1.Enum;
-using ConsoleApp1.Interfaces;
+﻿using ConsoleApp1.Models.Enums;
+using ConsoleApp1.Models.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ConsoleApp1
@@ -10,6 +10,7 @@ namespace ConsoleApp1
         private readonly INumberGenerator _numberGenerator;
         private readonly INumbersComparer _numberComparer;
         private readonly IMessagePrinter _messagePrinter;
+        private readonly IAttemptCounter _attemptCounter;
         private readonly int _minNumber;
         private readonly int _maxNumber;
 
@@ -23,23 +24,18 @@ namespace ConsoleApp1
             _numberGenerator = serviceProvider.GetRequiredService<INumberGenerator>();
             _numberComparer = serviceProvider.GetRequiredService<INumbersComparer>();
             _messagePrinter = serviceProvider.GetRequiredService<IMessagePrinter>();
+            _attemptCounter = serviceProvider.GetRequiredService<IAttemptCounter>();
             _minNumber = minNumber;
             _maxNumber = maxNumber;
         }
 
         public void StartGame()
         {
-            _messagePrinter.PrintMessage("Добро пожаловать в игру Угадай Число!");
-            _messagePrinter.PrintMessage("Правила игры:");
-            _messagePrinter.PrintMessage($"Игрой загадывается случайное число от {_minNumber} до {_maxNumber}, затем вам предлагается угадать его");
-            _messagePrinter.PrintMessage("Если вам не удалось угадать число, то игра вам подскажет, меньше оно или больше");
-
             _targetNumber = _numberGenerator.GenerateNumber(_minNumber, _maxNumber);
 
-            _messagePrinter.PrintMessage("");
-            _messagePrinter.PrintMessage("Число было загадано, введите предполагаемое число:");
+            _messagePrinter.PrintMessage($"Я загадал число от {_minNumber} до {_maxNumber}. На то чтобы угадать его, у вас есть {_attemptCounter.AttemptsLeft} попытки!");
 
-            while (true) { 
+            while (_attemptCounter.HasAttemptsLeft()) { 
                 _guessedNumber = _inputProvider.ReadInteger();
 
                 _compareResult = _numberComparer.Compare(_guessedNumber, _targetNumber);
@@ -53,10 +49,12 @@ namespace ConsoleApp1
                         _messagePrinter.PrintMessage("Число больше загаданного, попробуйте ещё раз");
                         break;
                     case CompareResult.Equal:
-                        _messagePrinter.PrintMessage("Вы победили!");
+                        _messagePrinter.PrintMessage("Вы угадали число!");
                         return;
                 }
+                _attemptCounter.DecreaseAttempts();
             }
+            _messagePrinter.PrintMessage("У вас закончились попытки. Загаданное число было: " + _targetNumber);
         }
     }
 }

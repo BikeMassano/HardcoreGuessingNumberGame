@@ -1,8 +1,9 @@
 ﻿// Создание service provider
-using ConsoleApp1.Interfaces;
 using ConsoleApp1;
 using Microsoft.Extensions.DependencyInjection;
-using ConsoleApp1.Services;
+using ConsoleApp1.Models.Interfaces;
+using ConsoleApp1.Models.Services;
+using ConsoleApp1.Models;
 
 class Program
 {
@@ -13,6 +14,7 @@ class Program
             .AddSingleton<INumberGenerator, RandomNumberGenerator>()
             .AddSingleton<INumbersComparer, NumbersComparer>()
             .AddSingleton<IMessagePrinter, ConsolePrinter>()
+            .AddSingleton<IAttemptCounter>(sp => new AttemptCounter(5))
             .BuildServiceProvider();
 
         var game = new GuessingNumberGame(serviceProvider, 1, 100);

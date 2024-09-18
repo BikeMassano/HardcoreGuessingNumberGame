@@ -1,6 +1,6 @@
-﻿using ConsoleApp1.Enum;
+﻿using ConsoleApp1.Models.Enums;
 
-namespace ConsoleApp1.Interfaces
+namespace ConsoleApp1.Models.Interfaces
 {
     interface INumbersComparer
     {

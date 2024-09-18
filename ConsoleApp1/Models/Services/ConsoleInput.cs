@@ -1,6 +1,6 @@
-﻿using ConsoleApp1.Interfaces;
+﻿using ConsoleApp1.Models.Interfaces;
 
-namespace ConsoleApp1.Services
+namespace ConsoleApp1.Models.Services
 {
     class ConsoleInput : IInputProvider
     {

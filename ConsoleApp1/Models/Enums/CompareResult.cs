@@ -1,4 +1,4 @@
-﻿namespace ConsoleApp1.Enum
+﻿namespace ConsoleApp1.Models.Enums
 {
     enum CompareResult
     {

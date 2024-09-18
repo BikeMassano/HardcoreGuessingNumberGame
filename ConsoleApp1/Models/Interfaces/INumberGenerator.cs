@@ -1,4 +1,4 @@
-﻿namespace ConsoleApp1.Interfaces
+﻿namespace ConsoleApp1.Models.Interfaces
 {
     interface INumberGenerator
     {

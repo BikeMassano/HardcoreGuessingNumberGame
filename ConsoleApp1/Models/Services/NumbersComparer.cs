@@ -1,7 +1,7 @@
-﻿using ConsoleApp1.Enum;
-using ConsoleApp1.Interfaces;
+﻿using ConsoleApp1.Models.Enums;
+using ConsoleApp1.Models.Interfaces;
 
-namespace ConsoleApp1.Services
+namespace ConsoleApp1.Models.Services
 {
     class NumbersComparer : INumbersComparer
     {
